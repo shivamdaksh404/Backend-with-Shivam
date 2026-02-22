@@ -1,10 +1,22 @@
-
 import express from 'express'
+import dotenv from 'dotenv';
+import connectDB from './db/connection.js';
+
+dotenv.config();
 
 const app = express();
-const port = process.env.PORT||4000;
+const port = process.env.PORT ;
 
 app.use(express.static('dist'))
+
+connectDB()
+.then(() => {
+    console.log("Database connected successfully");
+})
+.catch((error) => {
+    console.error(`Failed to connect to the database: ${error.message}`);
+    process.exit(1);
+});
 
 app.get('/', (req, res) => {
     res.send("Hello World Chao")
